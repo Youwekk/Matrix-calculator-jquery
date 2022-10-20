@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		<title>Matrix</title>
+
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+
+	<body>
+
+		<main>
+			<div class="matrixes">
+				<div class="matrix-A">
+					<p class="matrix-title">Матрица A =</p>
+					<div class="matrix-wrap">
+						<div class="bracket bracket-left" data-matrix="A">(</div>
+						<form class="matrix" data-matrix="A" data-rows="3" data-columns="3">
+							<input type="number" data-matrix="A" data-row="1" data-column="1">
+						</form>
+						<div class="bracket bracket-right" data-matrix="A">)</div>
+					</div>
+					<div class="matrix-size">
+						<div>
+							<span>i = </span>
+							<input type="number" min="1" class="rows" data-matrix="A">
+						</div>
+						<div>
+							<span>j = </span>
+							<input type="number" min="1" max="8" class="cols" data-matrix="A">
+						</div>
+					</div>
+				</div>
+				<div class="matrix-B">
+					<p class="matrix-title">Матрица B =</p>
+					<div class="matrix-wrap">
+						<div class="bracket bracket-left" data-matrix="B">(</div>
+						<form class="matrix" data-matrix="B" data-rows="3" data-columns="3">
+							<input type="number" data-matrix="B" data-row="1" data-column="1">
+						</form>
+						<div class="bracket bracket-right" data-matrix="B">)</div>
+					</div>
+					<div class="matrix-size">
+						<div>
+							<span>i = </span>
+							<input type="number" min="1" class="rows" data-matrix="B">
+						</div>
+						<div>
+							<span>j = </span>
+							<input type="number" min="1" max="8" class="cols" data-matrix="B">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="operators">
+				<div class="operators-top">
+					<button class="reverse-btn" onclick="switchMatrixes()"><img src="img/switch.png" alt="Switch"></button>
+				</div>
+				<button class="random" data-matrix="A" onclick="genRandom('A')">Random</button>
+				<div class="multiply-by matrix-A_multiply-by">
+					<input type="number" data-matrix="A">
+					<button data-matrix="A" onclick="mulBy('A')">⨯ A</button>
+				</div>
+				<button class="sum" onclick="sum()">A + B</button>
+				<button class="sub" onclick="sub()">A - B</button>
+				<button class="mul" onclick="mul()">A ⨯ B</button>
+				<div class="multiply-by matrix-B_multiply-by">
+					<input type="number" data-matrix="B">
+					<button data-matrix="B" onclick="mulBy('B')">⨯ B</button>
+				</div>
+				<button class="random" data-matrix="B" onclick="genRandom('B')">Random</button>
+			</div>
+			<div class="matrix-C">
+				<p class="matrix-title">Результат</p>
+				<div class="matrix-wrap">
+					<div class="bracket bracket-left" data-matrix="C">(</div>
+					<form class="matrix" data-matrix="C" data-rows="3" data-columns="3">
+						<input type="number" data-matrix="C" data-row="1" data-column="1" disabled>
+					</form>
+					<div class="bracket bracket-right" data-matrix="C">)</div>
+				</div>
+			</div>
+		</main>
+
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/script.js"></script>
+	</body>
+</html>

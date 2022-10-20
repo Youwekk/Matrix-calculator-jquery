@@ -1,0 +1,360 @@
+html{
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body{
+  font-family: 'Open Sans', sans-serif;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+a:hover{
+  text-decoration: none;
+  color: inherit;
+}
+
+picture{
+  display: contents;
+}
+
+.mob{
+  display: none;
+}
+
+
+ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+body{
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40"><g stroke="ghostwhite" stroke-width="1" stroke-linecap="square"><line x1="0.5" y1="19.5" x2="59.5" y2="19.5" /><line x1="0.5" y1="39.5" x2="59.5" y2="39.5" /><line x1="19.5" y1="0.5" x2="19.5" y2="39.5" /><line x1="39.5" y1="0.5" x2="39.5" y2="39.5" /><line x1="59.5" y1="0.5" x2="59.5" y2="39.5" /></g></svg>');
+  padding-bottom: calc(100 * 100vw / 1920);
+}
+
+
+.matrixes{
+  display: flex;
+  justify-content: space-between;
+  padding: calc(50 * 100vw / 1920) calc(250 * 100vw / 1920) 0;
+}
+.matrix-title{
+  font-size: calc(24 * 100vw / 1920);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: calc(30 * 100vw / 1920);
+}
+.matrix-wrap{
+  display: flex;
+  justify-content: space-between;
+}
+.bracket{
+  font-family: math, serif;
+  align-self: center;
+  transform-origin: 50% calc(50% + 0.175ex);
+}
+.matrix{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: calc(8 * 100vw / 1920);
+}
+.matrix input{
+  /* 78 x 42 px */
+  /* Gap = 8px */
+  width: calc(60 * 100vw / 1920);
+  height: calc(30 * 100vw / 1920);
+  background: #fff;
+  padding: calc(3 * 100vw / 1920) calc(4 * 100vw / 1920);
+  border: #d5d5d5 1px solid;
+  border-radius: calc(5 * 100vw / 1920);
+  box-shadow: inset 0px 1px 1px hsl(0deg 0% 0% / 8%);
+
+  font-size: calc(16 * 100vw / 1920);
+  text-align: right;
+}
+.matrix input::-webkit-outer-spin-button,
+.matrix input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.matrix input[type=number] {
+  -moz-appearance: textfield;
+}
+.matrix input:focus{
+  outline: calc(3 * 100vw / 1920) solid #4D90FE;
+  outline-offset: -1px;
+}
+.matrix input:disabled,
+.matrix input[disabled]{
+  cursor: text;
+}
+
+.matrix-size{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(40 * 100vw / 1920);
+  margin: 0;
+  margin-top: calc(30 * 100vw / 1920);
+  padding: 0 calc(20 * 100vw / 1920);
+}
+.matrix-size input{
+  /* 78 x 42 px */
+  /* Gap = 8px */
+  width: calc(60 * 100vw / 1920);
+  height: calc(30 * 100vw / 1920);
+  background: #fff;
+  padding: calc(3 * 100vw / 1920) calc(4 * 100vw / 1920);
+  border: #d5d5d5 1px solid;
+  border-radius: calc(5 * 100vw / 1920);
+  box-shadow: inset 0px 1px 1px hsl(0deg 0% 0% / 8%);
+
+  font-size: calc(16 * 100vw / 1920);
+  text-align: right;
+}
+.matrix-size input:focus{
+  outline: calc(3 * 100vw / 1920) solid #4D90FE;
+  outline-offset: -1px;
+}
+.matrix-size span{
+  font-size: calc(20 * 100vw / 1920);
+}
+
+.operators{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: calc(10 * 100vw / 1920);
+}
+.operators button{
+  font-size: calc(24 * 100vw / 1920);
+  padding: calc(6 * 100vw / 1920) calc(14 * 100vw / 1920);
+  border: calc(2 * 100vw / 1920) solid #12b51f;
+  border-radius: calc(8 * 100vw / 1920);
+  background: #17e327;
+  box-shadow: 2px 2px 3px 0px #5c5c5c;
+  transition: box-shadow 0.25s;
+  cursor: pointer;
+}
+.operators button:disabled,
+.operators button[disabled]{
+  background: #df0909;
+  border-color: #a90b0b;
+  box-shadow: none;
+  cursor: no-drop;
+}
+.operators button:hover{
+  box-shadow: none;
+}
+.operators button:hover img{
+  filter: none;
+  -webkit-filter: none;
+  transform: rotate(180deg);
+}
+.operators-top{
+  width: 100%;
+}
+.operators .reverse-btn{
+  display: block;
+  margin: 0 auto;
+  background: 0;
+  border: 0;
+  box-shadow: none;
+}
+.operators .reverse-btn img{
+  width: calc(50 * 100vw / 1920);
+  height: calc(50 * 100vw / 1920);
+  -webkit-filter: drop-shadow(2px 2px 1px #5c5c5c);
+  filter: drop-shadow(2px 2px 1px #5c5c5c);
+  transition: filter 0.25s, transform 0.5s;
+}
+
+.operators .multiply-by{
+  display: flex;
+  align-items: center;
+}
+.operators .multiply-by input{
+  width: calc(60 * 100vw / 1920);
+  height: 100%;
+  background: #fff;
+  padding: 0 calc(4 * 100vw / 1920);
+  border: #d5d5d5 1px solid;
+  border-right: none;
+  border-radius: calc(5 * 100vw / 1920) 0 0 calc(5 * 100vw / 1920);
+  box-shadow: inset 0px 1px 1px hsl(0deg 0% 0% / 8%);
+
+  font-size: calc(16 * 100vw / 1920);
+  text-align: right;
+}
+.operators .multiply-by input::-webkit-outer-spin-button,
+.operators .multiply-by input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.operators .multiply-by input[type=number] {
+  -moz-appearance: textfield;
+}
+.operators .multiply-by input:focus{
+  outline: calc(3 * 100vw / 1920) solid #4D90FE;
+  outline-offset: calc(-3 * 100vw / 1920);
+}
+
+.operators .matrix-A_multiply-by{
+  margin-right: calc(100 * 100vw / 1920);
+}
+.operators .matrix-B_multiply-by{
+  margin-left: calc(100 * 100vw / 1920);
+}
+
+.operators .multiply-by button{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.operators .random[data-matrix="A"]{
+  margin-right: calc(10 * 100vw / 1920);
+}
+.operators .random[data-matrix="B"]{
+  margin-left: calc(10 * 100vw / 1920);
+}
+
+
+.matrix-C{
+  width: max-content;
+  margin: 0 auto;
+}
+
+
+footer{
+  padding-top: calc(200 * 100vw / 1920);
+}
+footer p{
+  font-size: calc(24 * 100vw / 1920);
+  text-align: center;
+  margin: 0;
+  margin-bottom: calc(20 * 100vw / 1920);
+}
+footer p a{
+  color: blue;
+  text-decoration: underline;
+}
+
+
+
+@media (max-width: 800px){
+
+  .matrixes{
+    flex-direction: column;
+    padding: 0 calc(20 * 100vw / 570);
+  }
+
+  .matrix-title{
+    font-size: calc(38 * 100vw / 570);
+    margin-bottom: calc(30 * 100vw / 570);
+    margin-top: calc(10 * 100vw / 570);
+  }
+
+  .matrix{
+    gap: calc(8 * 100vw / 570);
+  }
+
+  .matrix-wrap{
+    justify-content: center;
+  }
+
+  .matrix input{
+    /* 78 x 42 px */
+    /* Gap = 8px */
+    width: calc(60 * 100vw / 570);
+    height: calc(30 * 100vw / 570);
+    padding: calc(3 * 100vw / 570) calc(4 * 100vw / 570);
+    border-radius: calc(5 * 100vw / 570);
+
+    font-size: calc(16 * 100vw / 570);
+  }
+
+  .matrix-size{
+    gap: calc(40 * 100vw / 570);
+    margin-top: calc(30 * 100vw / 570);
+    padding: 0 calc(20 * 100vw / 570);
+  }
+  .matrix-size input{
+    width: calc(60 * 100vw / 570);
+    height: calc(30 * 100vw / 570);
+    padding: calc(3 * 100vw / 570) calc(4 * 100vw / 570);
+    border-radius: calc(5 * 100vw / 570);
+    font-size: calc(16 * 100vw / 570);
+  }
+  .matrix-size input:focus{
+    outline: calc(3 * 100vw / 570) solid #4D90FE;
+  }
+  .matrix-size span{
+    font-size: calc(20 * 100vw / 570);
+  }
+
+
+  .operators{
+    display: flex;
+    flex-direction: column;
+    padding: 0 calc(200 * 100vw / 570);
+    gap: calc(10 * 100vw / 570);
+  }
+  .operators .reverse-btn{
+    margin: calc(20 * 100vw / 570) auto;
+  }
+  .operators .reverse-btn img{
+    width: calc(50 * 100vw / 570);
+    height: calc(50 * 100vw / 570);
+  }
+
+  .operators button{
+    font-size: calc(24 * 100vw / 570);
+    padding: calc(6 * 100vw / 570) calc(14 * 100vw / 570);
+    border: calc(2 * 100vw / 570) solid #12b51f;
+    border-radius: calc(8 * 100vw / 570);
+    box-shadow: calc(2 * 100vw / 570) calc(2 * 100vw / 570) calc(3 * 100vw / 570) 0px #5c5c5c;
+  }
+
+  .operators .multiply-by input{
+    width: calc(85 * 100vw / 570);
+    padding: 0 calc(4 * 100vw / 570);
+    border-radius: calc(5 * 100vw / 570) 0 0 calc(5 * 100vw / 570);
+    font-size: calc(38 * 100vw / 570);
+  }
+  .operators .multiply-by input:focus{
+    outline: calc(3 * 100vw / 570) solid #4D90FE;
+    outline-offset: calc(-3 * 100vw / 570);
+  }
+
+  .operators .matrix-A_multiply-by,
+  .operators .matrix-B_multiply-by{
+    margin: 0;
+  }
+
+  .operators .random[data-matrix="A"]{
+    margin-right: calc(10 * 100vw / 570);
+  }
+  .operators .random[data-matrix="B"]{
+    margin-left: calc(10 * 100vw / 570);
+  }
+
+}
