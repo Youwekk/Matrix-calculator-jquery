@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+jQuery(document).ready(($) => {
 
 	setMatrixSize();
 	setBracketsSize();
@@ -10,85 +10,90 @@ jQuery(document).ready(function($){
 
 });
 
-$( window ).resize(function() {
+$( window ).resize(() => {
 	setMatrixSize();
 	setBracketsSize();
 });
 
-function getArray(elem, attr) {
-	return elem.map(function() {
-	  return $(this).attr(attr);
-	}).toArray();
+const getArrayOfAttrs = (elements, attr) => {
+	const arr = [];
+	elements.each((_, e) => 
+		arr.push( $(e).attr(attr) )
+	);
+	return arr;
 }
 
-function newInput(m, r, c){
-	var res = '<input type="number" data-matrix="'+m+'" data-row="'+r+'" data-column="'+c+'"';
+const newInput = (m, r, c) => {
+	let res = '<input type="number" data-matrix="'+m+'" data-row="'+r+'" data-column="'+c+'"';
 	if( m == "C" ) res += ' disabled';
 	res += '>';
 	return res;
 }
 
-function setMatrixSize() {
-	if( $(document).width() <= 800 ) var ratio = 570;
-	else var ratio = 1920;
+const setMatrixSize = () => {
+	let ratio;
+	if( $(document).width() <= 800 ) ratio = 570;
+	else ratio = 1920;
 
-	$('.matrix').each(function(i, e){
-		var cols = $(this).data('columns');
-		var input_width = 78;
-		var gap = 8;
+	const input_width = 78;
+	const gap = 8;
 
-		$(this).css('max-width', (cols*input_width+(cols-1)*gap) * $(document).width() / ratio);
+	$('.matrix').each((_, e) => {
+		const cols = $(e).data('columns');
+
+		$(e).css('max-width', (cols*input_width+(cols-1)*gap) * $(document).width() / ratio);
 	});
 }
 
-function setBracketsSize() {
-	if( $(document).width() <= 800 ) var ratio = 570;
-	else var ratio = 1920;
+const setBracketsSize = () => {
+	let ratio;
+	if( $(document).width() <= 800 ) ratio = 570;
+	else ratio = 1920;
 
-	$('.bracket').each(function(i, e){
-		var m = $(this).data('matrix');
-		var mh = $('.matrix[data-matrix="'+m+'"]').data('rows');
+	$('.bracket').each(function(_, e){
+		const m = $(e).data('matrix');
+		const mh = $('.matrix[data-matrix="'+m+'"]').data('rows');
 
-		var scale_w = (0.0779*mh + 1.3070) * $(document).width() / ratio;
-		var scale_h = (3*mh) * $(document).width() / ratio;
+		const scale_w = (0.0779*mh + 1.3070) * $(document).width() / ratio;
+		const scale_h = (3*mh) * $(document).width() / ratio;
 
-		$(this).css('transform', 'scale('+scale_w+', '+scale_h+')');
+		$(e).css('transform', 'scale('+scale_w+', '+scale_h+')');
 	});
 }
 
-function changeInputs(){
-	$('.matrix').each(function(i, e){
-		var matrix = $(this).data('matrix');
-		var rows = $(this).data('rows');
-		var cols = $(this).data('columns');
+const changeInputs = () => {
+	$('.matrix').each((_, e) => {
+		const matrix = $(e).data('matrix');
+		const rows = $(e).data('rows');
+		const cols = $(e).data('columns');
 
-		var inputs = $(this).children('input');
-		var input_count = inputs.length;
+		const inputs = $(e).children('input');
+		const input_count = inputs.length;
 		
 		if( (rows*cols) < input_count ){
-			inputs.each(function(i, e){
-				if( $(this).data('row') > rows || $(this).data('column') > cols )
-					$(this).remove();
+			inputs.each((_, input) => {
+				if( $(input).data('row') > rows || $(input).data('column') > cols )
+					$(input).remove();
 			});
 		} else if( (rows*cols) > input_count ){
-			var max_row_input = Math.max(...getArray(inputs, "data-row"));
-			var max_col_input = Math.max(...getArray(inputs, "data-column"));
+			let max_row_input = Math.max(...getArrayOfAttrs(inputs, "data-row"));
+			let max_col_input = Math.max(...getArrayOfAttrs(inputs, "data-column"));
 
 			if( max_row_input < rows ){
-				var diff = rows - max_row_input;
-				for (var r = 0; r < diff; r++){
-					for (var c = 0; c < max_col_input; c++) {
-						$(this).append( newInput(matrix, max_row_input+r+1, c+1) );
+				let diff = rows - max_row_input;
+				for (let r = 0; r < diff; r++){
+					for (let c = 0; c < max_col_input; c++) {
+						$(e).append( newInput(matrix, max_row_input+r+1, c+1) );
 					}
 				}
 				max_row_input = rows;
 			}
 
 			if( max_col_input < cols ){
-				var diff = cols - max_col_input;
-				for (var c = 0; c < diff; c++){
-					for (var r = 0; r < max_row_input; r++){
-						$(this).children('input[data-row="'+(r+1)+'"][data-column="'+(max_col_input+c)+'"]')
+				let diff = cols - max_col_input;
+				for (let c = 0; c < diff; c++){
+					for (let r = 0; r < max_row_input; r++){
+						$(e).children('input[data-row="'+(r+1)+'"][data-column="'+(max_col_input+c)+'"]')
 							.after( newInput(matrix, r+1, max_col_input+c+1) );
 					}
 				}
@@ -101,15 +106,15 @@ function changeInputs(){
 	updateOperators();
 }
 
-function controls(e){
-	var $inputs = $('.matrix input');
-	var $focused = $('.matrix input:focus');
-	var focused_row = $focused.data('row');
-	var focused_col = $focused.data('column');
+const controls = (e) => {
+	const $inputs = $('.matrix input');
+	const $focused = $('.matrix input:focus');
+	const focused_row = $focused.data('row');
+	const focused_col = $focused.data('column');
 
-	var $matrix = $('.matrix[data-matrix="'+$focused.data('matrix')+'"]');
-	var matrix_rows = $matrix.data('rows');
-	var matrix_cols = $matrix.data('columns');
+	const $matrix = $('.matrix[data-matrix="'+$focused.data('matrix')+'"]');
+	const matrix_rows = $matrix.data('rows');
+	const matrix_cols = $matrix.data('columns');
 
 	if( e.which == 32 ){ // Space bar
 		if( focused_col < matrix_cols ){
@@ -134,53 +139,55 @@ function controls(e){
 	}
 }
 
-function changeMatrixSizeInputs(){
+const changeMatrixSizeInputs = () => {
 
-	var inputs_rows = $('.matrix-size input.rows');
-	var inputs_cols = $('.matrix-size input.cols');
+	const inputs_rows = $('.matrix-size input.rows');
+	const inputs_cols = $('.matrix-size input.cols');
 
-	inputs_rows.each(function(i, e){
-		var $matrix = $('.matrix[data-matrix="'+$(this).data('matrix')+'"]');
-		$(this).val($matrix.data('rows'));
+	inputs_rows.each(function(_, e){
+		const $matrix = $('.matrix[data-matrix="'+$(e).data('matrix')+'"]');
+		$(e).val($matrix.data('rows'));
 	});
-	inputs_cols.each(function(i, e){
-		var $matrix = $('.matrix[data-matrix="'+$(this).data('matrix')+'"]');
-		$(this).val($matrix.data('columns'));
+	inputs_cols.each(function(_, e){
+		const $matrix = $('.matrix[data-matrix="'+$(e).data('matrix')+'"]');
+		$(e).val($matrix.data('columns'));
 
 		if( $(document).width() <= 800 )
-			$(this).attr('max', '6');
+			$(e).attr('max', '6');
 	});
 }
 
-function matrixSizeInput(){
-	var $matrix = $('.matrix[data-matrix="'+$(this).data('matrix')+'"]');
+const matrixSizeInput = (event) => {
+	const $matrix = $('.matrix[data-matrix="'+$(event.target).data('matrix')+'"]');
 
-	if( $(this).hasClass('rows') )
-		$matrix.data('rows', parseInt($(this).val()));
-	if( $(this).hasClass('cols') )
-		$matrix.data('columns', parseInt($(this).val()));
+	if( $(event.target).hasClass('rows') )
+		$matrix.data('rows', parseInt($(event.target).val()));
+	if( $(event.target).hasClass('cols') )
+		$matrix.data('columns', parseInt($(event.target).val()));
 
 	changeInputs();
 }
 
-function switchMatrixes(){
-	var $matrix_A = $('.matrix[data-matrix="A"]');
-	var $matrix_B = $('.matrix[data-matrix="B"]');
+const switchMatrixes = () => {
+	let $matrix_A = $('.matrix[data-matrix="A"]');
+	let $matrix_B = $('.matrix[data-matrix="B"]');
 
-	var $matrix_A_wrap = $matrix_A.parent();
-	var $matrix_B_wrap = $matrix_B.parent();
+	const $matrix_A_wrap = $matrix_A.parent();
+	const $matrix_B_wrap = $matrix_B.parent();
 
-	var matrix_A_values = $matrix_A.children('input').map(function(){
-		return $(this).val();
-	}).get();
-	var matrix_B_values = $matrix_B.children('input').map(function(){
-		return $(this).val();
-	}).get();
+	const matrix_A_values = [];
+	$matrix_A.children('input').each((_, e) => {
+		matrix_A_values.push( $(e).val() );
+	});
+	const matrix_B_values = [];
+	$matrix_B.children('input').each((_, e) => {
+		matrix_B_values.push( $(e).val() );
+	});
 
-	var matrix_A_rows = $matrix_A.data('rows');
-	var matrix_A_cols = $matrix_A.data('columns');
-	var matrix_B_rows = $matrix_B.data('rows');
-	var matrix_B_cols = $matrix_B.data('columns');
+	const matrix_A_rows = $matrix_A.data('rows');
+	const matrix_A_cols = $matrix_A.data('columns');
+	const matrix_B_rows = $matrix_B.data('rows');
+	const matrix_B_cols = $matrix_B.data('columns');
 
 	$matrix_A_wrap.find('*').data('matrix', 'B');
 	$matrix_B_wrap.find('*').data('matrix', 'A');
@@ -188,7 +195,7 @@ function switchMatrixes(){
 	$matrix_A_wrap.find('*').attr('data-matrix', 'B');
 	$matrix_B_wrap.find('*').attr('data-matrix', 'A');
 
-	var tempA = $matrix_A_wrap.html();
+	const tempA = $matrix_A_wrap.html();
 
 	$matrix_A_wrap.html( $matrix_B_wrap.html() );
 	$matrix_B_wrap.html( tempA );
@@ -201,29 +208,29 @@ function switchMatrixes(){
 	$matrix_B.data('rows', matrix_A_rows);
 	$matrix_B.data('columns', matrix_A_cols);
 
-	$matrix_A.children('input').each(function(i, e) {
-		$(this).val( matrix_B_values[i] );
+	$matrix_A.children('input').each((i, e) => {
+		$(e).val( matrix_B_values[i] );
 	});
-	$matrix_B.children('input').each(function(i, e) {
-		$(this).val( matrix_A_values[i] );
+	$matrix_B.children('input').each((i, e) => {
+		$(e).val( matrix_A_values[i] );
 	});
 
 	changeInputs();
 	changeMatrixSizeInputs();
 }
 
-function updateOperators(){
-	var $matrix_A = $('.matrix[data-matrix="A"]');
-	var $matrix_B = $('.matrix[data-matrix="B"]');
+const updateOperators = () => {
+	const $matrix_A = $('.matrix[data-matrix="A"]');
+	const $matrix_B = $('.matrix[data-matrix="B"]');
 
-	var matrix_A_rows = $matrix_A.data('rows');
-	var matrix_A_cols = $matrix_A.data('columns');
-	var matrix_B_rows = $matrix_B.data('rows');
-	var matrix_B_cols = $matrix_B.data('columns');
+	const matrix_A_rows = $matrix_A.data('rows');
+	const matrix_A_cols = $matrix_A.data('columns');
+	const matrix_B_rows = $matrix_B.data('rows');
+	const matrix_B_cols = $matrix_B.data('columns');
 
-	var $sum = $('.operators .sum');
-	var $sub = $('.operators .sub');
-	var $mul = $('.operators .mul');
+	const $sum = $('.operators .sum');
+	const $sub = $('.operators .sub');
+	const $mul = $('.operators .mul');
 
 	if( matrix_A_rows == matrix_B_rows && matrix_A_cols == matrix_B_cols ){
 		$sum.prop('disabled', false);
@@ -235,8 +242,8 @@ function updateOperators(){
 		$sum.prop('disabled', true);
 		$sub.prop('disabled', true);
 
-		$sum.attr('title', "Матрицы должны быть одинакового размера!");
-		$sub.attr('title', "Матрицы должны быть одинакового размера!");
+		$sum.attr('title', "Matrices should be of the same size!");
+		$sub.attr('title', "Matrices should be of the same size!");
 	}
 
 	if( matrix_A_rows == matrix_B_cols ){
@@ -244,93 +251,97 @@ function updateOperators(){
 		$mul.attr('title', "");
 	} else {
 		$mul.prop('disabled', true);
-		$mul.attr('title', "Колличество строк матрицы A должно совпадать с колличеством столбцов матрицы B!");
+		$mul.attr('title', "The number of rows of A must coincide with the number of columns of B!");
 	}
 }
 
-function sum(){
-	var $matrix_A = $('.matrix[data-matrix="A"]');
-	var $matrix_B = $('.matrix[data-matrix="B"]');
-	var $matrix_C = $('.matrix[data-matrix="C"]');
+const sum = () => {
+	const $matrix_A = $('.matrix[data-matrix="A"]');
+	const $matrix_B = $('.matrix[data-matrix="B"]');
+	const $matrix_C = $('.matrix[data-matrix="C"]');
 
-	var rows = $matrix_A.data('rows');
-	var cols = $matrix_A.data('columns');
+	const rows = $matrix_A.data('rows');
+	const cols = $matrix_A.data('columns');
 
-	var matrix_A_values = $matrix_A.children('input').map(function(){
-		return parseFloat( $(this).val() );
-	}).get();
-	var matrix_B_values = $matrix_B.children('input').map(function(){
-		return parseFloat( $(this).val() );
-	}).get();
+	const matrix_A_values = [];
+	$matrix_A.children('input').each((_, e) => {
+		matrix_A_values.push( parseFloat( $(e).val() ) );
+	});
+	const matrix_B_values = [];
+	$matrix_B.children('input').each((_, e) => {
+		matrix_B_values.push( parseFloat( $(e).val() ) );
+	});
 
 	$matrix_C.data('rows', rows);
 	$matrix_C.data('columns', cols);
 	changeInputs();
 
-	$matrix_C.children('input').each(function(i, e) {
-		$(this).val( matrix_A_values[i] + matrix_B_values[i] );
+	$matrix_C.children('input').each((i, e) => {
+		$(e).val( matrix_A_values[i] + matrix_B_values[i] );
 	});
 }
 
 function sub(){
-	var $matrix_A = $('.matrix[data-matrix="A"]');
-	var $matrix_B = $('.matrix[data-matrix="B"]');
-	var $matrix_C = $('.matrix[data-matrix="C"]');
+	const $matrix_A = $('.matrix[data-matrix="A"]');
+	const $matrix_B = $('.matrix[data-matrix="B"]');
+	const $matrix_C = $('.matrix[data-matrix="C"]');
 
-	var rows = $matrix_A.data('rows');
-	var cols = $matrix_A.data('columns');
+	const rows = $matrix_A.data('rows');
+	const cols = $matrix_A.data('columns');
 
-	var matrix_A_values = $matrix_A.children('input').map(function(){
-		return parseFloat( $(this).val() );
-	}).get();
-	var matrix_B_values = $matrix_B.children('input').map(function(){
-		return parseFloat( $(this).val() );
-	}).get();
+	const matrix_A_values = [];
+	$matrix_A.children('input').each((_, e) => {
+		matrix_A_values.push( parseFloat( $(e).val() ) );
+	});
+	const matrix_B_values = [];
+	$matrix_B.children('input').each((_, e) => {
+		matrix_B_values.push( parseFloat( $(e).val() ) );
+	});
 
 	$matrix_C.data('rows', rows);
 	$matrix_C.data('columns', cols);
 	changeInputs();
 
 	$matrix_C.children('input').each(function(i, e) {
-		$(this).val( matrix_A_values[i] - matrix_B_values[i] );
+		$(e).val( matrix_A_values[i] - matrix_B_values[i] );
 	});
 }
 
-function mul(){
-	var $matrix_A = $('.matrix[data-matrix="A"]');
-	var $matrix_B = $('.matrix[data-matrix="B"]');
-	var $matrix_C = $('.matrix[data-matrix="C"]');
+const mul = () => {
+	const $matrix_A = $('.matrix[data-matrix="A"]');
+	const $matrix_B = $('.matrix[data-matrix="B"]');
+	const $matrix_C = $('.matrix[data-matrix="C"]');
 
-	var matrix_A_rows = $matrix_A.data('rows');
-	var matrix_A_cols = $matrix_A.data('columns');
-	var matrix_B_rows = $matrix_B.data('rows');
-	var matrix_B_cols = $matrix_B.data('columns');
+	const matrix_A_rows = $matrix_A.data('rows');
+	const matrix_A_cols = $matrix_A.data('columns');
+	const matrix_B_rows = $matrix_B.data('rows');
+	const matrix_B_cols = $matrix_B.data('columns');
 
 	$matrix_C.data('rows', matrix_A_rows);
 	$matrix_C.data('columns', matrix_B_cols);
 	changeInputs();
 
-	var matrix_A_values = [];
-	var matrix_B_values = [];
-	var matrix_C_values = [];
-	for(var i = 0; i < matrix_A_rows; i++){ // Get matrix A values
+	const matrix_A_values = [];
+	const matrix_B_values = [];
+	const matrix_C_values = [];
+	for(let i = 0; i < matrix_A_rows; i++){ // Get matrix A values
 		matrix_A_values.push([]);
-		for(var j = 0; j < matrix_A_cols; j++){
+		for(let j = 0; j < matrix_A_cols; j++){
 			matrix_A_values[i].push( $matrix_A.children('input[data-row='+(i+1)+'][data-column='+(j+1)+']').val() );
 		}
 	}
-	for(var i = 0; i < matrix_B_rows; i++){ // Get matrix B values
+	for(let i = 0; i < matrix_B_rows; i++){ // Get matrix B values
 		matrix_B_values.push([]);
-		for(var j = 0; j < matrix_B_cols; j++){
+		for(let j = 0; j < matrix_B_cols; j++){
 			matrix_B_values[i].push( $matrix_B.children('input[data-row='+(i+1)+'][data-column='+(j+1)+']').val() );
 		}
 	}
 
-	var t = 0;
-	for(var i = 0; i < matrix_A_values.length; i++){ // Set matrix C values
+	let t = 0;
+	for(let i = 0; i < matrix_A_values.length; i++){ // Set matrix C values
 		matrix_C_values.push([]);
-		for(var j = 0; j < matrix_B_values[0].length; j++){
-			for(var k = 0; k < matrix_B_values.length; k++){
+		for(let j = 0; j < matrix_B_values[0].length; j++){
+			for(let k = 0; k < matrix_B_values.length; k++){
 				t += matrix_A_values[i][k] * matrix_B_values[k][j];
 			}
 			matrix_C_values[i].push(t);
@@ -338,27 +349,27 @@ function mul(){
 		}
 	}
 	
-	$matrix_C.children('input').each(function(i, e) {
-		var i = $(this).data('row');
-		var j = $(this).data('column');
-		$(this).val( matrix_C_values[i-1][j-1] );
+	$matrix_C.children('input').each((index, e) => {
+		const i = $(e).data('row');
+		const j = $(e).data('column');
+		$(e).val( matrix_C_values[i-1][j-1] );
 	});
 }
 
-function mulBy(m) {
-	var $matrix = $('.matrix[data-matrix="'+m+'"]');
-	var k = $('.multiply-by input[data-matrix="'+m+'"]').val();
+const mulBy = (m) => {
+	const $matrix = $('.matrix[data-matrix="'+m+'"]');
+	const k = $('.multiply-by input[data-matrix="'+m+'"]').val();
 
-	$matrix.children('input').each(function(i, e) {
-		$(this).val( $(this).val() * k );
+	$matrix.children('input').each((i, e) => {
+		$(e).val( $(e).val() * k );
 	});
 }
 
-function genRandom(m) {
-	var $matrix = $('.matrix[data-matrix="'+m+'"]');
+const genRandom = (m) => {
+	const $matrix = $('.matrix[data-matrix="'+m+'"]');
 
-	$matrix.children('input').each(function(i, e) {
-		$(this).val(
+	$matrix.children('input').each((i, e) => {
+		$(e).val(
 			Math.floor( Math.random() * 201 - 100 )
 		);
 	});
